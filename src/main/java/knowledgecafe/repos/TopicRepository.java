@@ -8,13 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public interface TopicRepository extends JpaRepository<Topic, Long> {
 
-    List<Topic> getTopicsByConfidenceLevelAndInitialStudyDateBetween(ConfidenceLevel confidenceLevel, LocalDate startDate, LocalDate endDate);
+    Set<Topic> getTopicsByConfidenceLevelAndInitialStudyDateBetween(ConfidenceLevel confidenceLevel, LocalDate startDate, LocalDate endDate);
 
-    List<Topic> getTopicsByInitialStudyDateIsBetween(LocalDate startDate, LocalDate endDate);
+    Set<Topic> getTopicsByInitialStudyDateIsBetween(LocalDate startDate, LocalDate endDate);
 
-    List<Topic> getTopicsBySubject(Subject subject);
+    Set<Topic> getTopicsBySubject(Subject subject);
+
+    Set<Topic> getTopicsByConfidenceLevelAndSubject(ConfidenceLevel confidenceLevel, Subject subject);
 
 }

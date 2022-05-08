@@ -39,12 +39,12 @@
         <!-- Modal -->
        <div th:insert="fragments/modal :: modal" th:with="reservation=${reservation}"></div>
         <!-- Added for testing -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchReservationModal">
-            Search Reservation
-        </button>
-        <!-- Modal -->
-        <div th:insert="fragments/modal :: modalnew" th:with="reservation=${reservation}" th:action="@{/reservations-search}"></div>
-
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchReservationModal">
+                Search Reservation
+            </button>
+            <div th:insert="fragments/modal :: modalnew" th:with="reservation=${reservation}"></div>
+        </div>
     </div>
 </div>
 

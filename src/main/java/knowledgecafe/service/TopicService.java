@@ -1,9 +1,6 @@
 package knowledgecafe.service;
 
-import knowledgecafe.model.Reservation;
-import knowledgecafe.model.Student;
-import knowledgecafe.model.Subject;
-import knowledgecafe.model.Topic;
+import knowledgecafe.model.*;
 import knowledgecafe.repos.RevisionRepository;
 import knowledgecafe.repos.StudentRepository;
 import knowledgecafe.repos.TopicRepository;
@@ -11,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class TopicService {
@@ -36,7 +35,7 @@ public class TopicService {
     }
 
     public Long createTopic(Topic topic, Subject subject) {
-        List<Topic> existingTopics = topicRepository.getTopicsBySubject(subject);
+        Set<Topic> existingTopics = topicRepository.getTopicsBySubject(subject);
         if(existingTopics.contains(topic)){
             //update Topic
             return topic.getId();
@@ -45,5 +44,8 @@ public class TopicService {
         }
     }
 
+    public Set<Topic> getTopicsByConfidenceLevelAndSubject(ConfidenceLevel confidenceLevel, Subject subject){
+        return topicRepository.getTopicsByConfidenceLevelAndSubject(confidenceLevel, subject);
+    }
 
 }

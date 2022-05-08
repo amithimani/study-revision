@@ -1,12 +1,8 @@
 package knowledgecafe;
 
-import knowledgecafe.model.Reservation;
-import knowledgecafe.model.Student;
-import knowledgecafe.model.Topic;
-import knowledgecafe.model.User;
-import knowledgecafe.service.ReservationService;
-import knowledgecafe.service.TopicService;
-import knowledgecafe.service.UserService;
+import knowledgecafe.dto.RevisionSearchPojo;
+import knowledgecafe.model.*;
+import knowledgecafe.service.*;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -19,60 +15,58 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Set;
 
 @Controller
-public class PagesController {
+public class RevisionController {
 
-    final UserService userService;
-    final ReservationService reservationService;
+    final StudentService studentService;
     final TopicService topicService;
+    final RevisionService revisionService;
+    final UserService userService;
 
-    public PagesController(UserService userService, ReservationService reservationService, TopicService topicService) {
-        this.userService = userService;
-        this.reservationService = reservationService;
+    public RevisionController(StudentService studentService, RevisionService revisionService, TopicService topicService, UserService userService) {
+        this.studentService = studentService;
+        this.revisionService = revisionService;
         this.topicService = topicService;
+        this.userService = userService;
     }
 
-    @GetMapping("/")
-    public String index(Model model) {
-        return "index";
-    }
-
-    @GetMapping("/reservations")
-    public String reservations(Model model, HttpSession session) {
+    @GetMapping("/revision-today")
+    public String revision_today(Model model, HttpSession session) {
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = principal.getUsername();
         User user = userService.getUserByUsername(name);
+        Student student = studentService.getStudentByUsername(name);
+        Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
 
         // This should always be the case
-        if (user != null) {
+            session.setAttribute("student", student);
             session.setAttribute("user", user);
+            model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
+            session.setAttribute("todaysRevisions", todaysRevisionTopic);
+            Topic topic = new Topic();
+            model.addAttribute("topic", topic);
+            return "revision";
 
-            // Empty reservation object in case the user creates a new reservation
-            Reservation reservation = new Reservation();
-            model.addAttribute("reservation", reservation);
 
-            return "reservations";
-        }
-
-        return "index";
+       // return "index";
     }
 
-    @PostMapping("/reservations-submit")
-    public String reservationsSubmit(@ModelAttribute Reservation reservation, Model model, @SessionAttribute("user") User user) {
+
+    @PostMapping("/revision-search-date")
+    public String revisionSearchByDate(@ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {
         // Save to DB after updating
-        assert user != null;
-        reservation.setUser(user);
-        reservationService.create(reservation);
-        Set<Reservation> userReservations = user.getReservations();
-        userReservations.add(reservation);
-        user.setReservations(userReservations);
-        userService.update(user.getId(), user);
-        return "redirect:/reservations";
-    }
 
+        LocalDate revisionStartDate = revision.getRevisionStartDate();
+        LocalDate revisionEndDate = revision.getRevisionEndDate();
+
+        Set<Revision> revisionsByDate = revisionService.getRevisionTopicsBetweenDate(revisionStartDate, revisionEndDate);
+        session.setAttribute("revisionsByDate", revisionsByDate);
+
+        return "revision";
+    }
+/*
     @PostMapping("/reservations-search")
     public String reservationsSearch(@ModelAttribute Reservation reservation, Model model, @SessionAttribute("user") User user, RedirectAttributes attr) {
         // Save to DB after updating
@@ -83,10 +77,12 @@ public class PagesController {
         return "result";
     }
 
-   /*@GetMapping("/result")
+   */
+/*@GetMapping("/result")
     public String returnResults(@ModelAttribute Reservation reservation, Model model){
         return "result";
-    }*/
+    }*//*
+
     @PostMapping("/topic-submit")
     public String topicSubmit(@ModelAttribute Topic topic , Model model, @SessionAttribute("user") Student user) {
         // Save to DB after updating
@@ -96,4 +92,5 @@ public class PagesController {
         Set<Topic> studentTopics = user.getTopics();
         return "redirect:/reservations";
     }
+*/
 }

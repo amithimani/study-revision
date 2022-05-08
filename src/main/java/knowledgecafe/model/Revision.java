@@ -36,4 +36,7 @@ public class Revision {
     @Column(nullable = false)
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     private LocalDate revisionDate;
+
+    @Column(nullable = false)
+    private Integer revisionNumber;
 }

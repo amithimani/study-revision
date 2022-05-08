@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Revision</title>
+
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
+</head>
+<body>
+
+<div>
+    <div th:insert="fragments/nav :: nav"></div>
+    <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
+        <h3>Welcome <span th:text=" ${session.user.getFullName()}"></span></h3>
+        <br>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Subject</th>
+                    <th scope="col">Chapter</th>
+                    <th scope="col">Topic</th>
+                    <th scope="col"> Confidence Level </th>
+                    <th scope="col">First Study Date</th>
+                    <th scope="col"> Edit TBD </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="revision : ${session.todaysRevisions}">
+                    <td th:text="${revision.getTopic().getSubject()}"></td>
+                    <td th:text="${revision.getTopic().getChapterName()}"></td>
+                    <td th:text="${revision.getTopic().getTopicName()}"></td>
+                    <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
+                    <td th:text="${revision.getTopic().getInitialStudyDate()}"></td>
+                    <td th:text="TBD"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTopic">
+            Add New Topic
+        </button>
+        <!-- Modal -->
+       <div th:insert="fragments/modal :: addtopic" th:with="topic=${topic}"></div>
+
+        <div>
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchSchedule">
+                Search Schedule
+            </button>
+            <div th:insert="fragments/modal :: searchschedule" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>
+<script th:src="@{/webjars/popper.js/1.12.9-1/umd/popper.min.js}"></script>
+<script th:src="@{/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js}"></script>
+
+</body>
+</html>

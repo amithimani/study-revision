@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Reservations..........</title>
+    <title>Reservations...</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
@@ -11,7 +11,7 @@
 <div>
     <div th:insert="fragments/nav :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Welcome ...........<span th:text=" ${session.user.getFullName()}"></span></h3>
+        <h3>Welcome.... <span th:text=" ${session.user.getFullName()}"></span></h3>
         <br>
         <table class="table">
             <thead>
@@ -36,13 +36,13 @@
             Create Reservation
         </button>
 
-        &lt;!&ndash; Modal &ndash;&gt;
+        <!-- Modal -->
         <div th:insert="fragments/modal :: modal" th:with="reservation=${reservation}"></div>
-        &lt;!&ndash; Added for testing &ndash;&gt;
+        <!-- Added for testing -->
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchReservationModal">
             Search Reservation
         </button>
-        &lt;!&ndash; Modal &ndash;&gt;
+        <!-- Modal -->
         <div th:insert="fragments/modal :: modalnew" th:with="reservation=${reservation}" th:action="@{/reservations-search}"></div>
 
     </div>

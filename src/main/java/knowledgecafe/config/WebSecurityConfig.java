@@ -1,5 +1,6 @@
 package knowledgecafe.config;
 
+import knowledgecafe.service.StudentService;
 import knowledgecafe.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,15 +16,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsServiceImpl userDetailsService;
 
+    private final StudentService studentService;
+
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     private final String[] SECURITY_IGNORED_ENDPOINTS = {
             "/h2-console/**", "/h2/**", "/webjars/**"
     };
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, StudentService studentService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userDetailsService = userDetailsService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.studentService = studentService;
     }
 
     @Override

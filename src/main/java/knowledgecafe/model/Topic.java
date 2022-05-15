@@ -46,7 +46,7 @@ public class Topic {
     @Column(nullable = true, unique = false)
     private String subTopic;
 
-    @Column(nullable = false ) //TODO : default value population
+    @Column(nullable = false ) //TODO: default value population
     private ConfidenceLevel confidenceLevel;
 
     @Column(nullable = false)

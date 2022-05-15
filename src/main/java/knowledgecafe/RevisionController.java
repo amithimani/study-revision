@@ -1,8 +1,11 @@
 package knowledgecafe;
 
 import knowledgecafe.dto.RevisionSearchPojo;
+import knowledgecafe.dto.TopicPojo;
 import knowledgecafe.model.*;
 import knowledgecafe.service.*;
+import knowledgecafe.util.DataConversion;
+import org.apache.tomcat.jni.Local;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,11 @@ public class RevisionController {
     final TopicService topicService;
     final RevisionService revisionService;
     final UserService userService;
+    final static int firstRevisionDaysToAdd = 1;
+    final static int SecondRevisionDaysToAdd = 7;
+    final static int ThirdRevisionDaysToAdd = 21;
+
+
 
     public RevisionController(StudentService studentService, RevisionService revisionService, TopicService topicService, UserService userService) {
         this.studentService = studentService;
@@ -41,9 +49,10 @@ public class RevisionController {
         Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
 
         // This should always be the case
-            session.setAttribute("student", student);
+            session.setAttribute("student", name);
             session.setAttribute("user", user);
             model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
+            model.addAttribute("topicPojo", new TopicPojo());
             session.setAttribute("todaysRevisions", todaysRevisionTopic);
             Topic topic = new Topic();
             model.addAttribute("topic", topic);
@@ -81,16 +90,14 @@ public class RevisionController {
 /*@GetMapping("/result")
     public String returnResults(@ModelAttribute Reservation reservation, Model model){
         return "result";
-    }*//*
+    }*/
 
     @PostMapping("/topic-submit")
-    public String topicSubmit(@ModelAttribute Topic topic , Model model, @SessionAttribute("user") Student user) {
+    public String topicSubmit(@ModelAttribute TopicPojo topic , Model model, HttpSession session) {
         // Save to DB after updating
-        assert user != null;
-        topic.setStudent(user);
-        topicService.createTopic(topic, topic.getSubject());
-        Set<Topic> studentTopics = user.getTopics();
-        return "redirect:/reservations";
+        Student student = studentService.getStudentByUsername(session.getAttribute("student").toString());
+        topicService.createTopic(DataConversion.TopicPojoToTopicBean(topic, student));
+
+        return "index";
     }
-*/
 }

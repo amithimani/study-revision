@@ -34,8 +34,8 @@ public class TopicService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    public Long createTopic(Topic topic, Subject subject) {
-        Set<Topic> existingTopics = topicRepository.getTopicsBySubject(subject);
+    public Long createTopic(Topic topic) {
+        Set<Topic> existingTopics = topicRepository.getTopicsBySubject(topic.getSubject());
         if(existingTopics.contains(topic)){
             //update Topic
             return topic.getId();

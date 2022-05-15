@@ -1,5 +1,6 @@
 package knowledgecafe;
 
+import knowledgecafe.dto.TopicPojo;
 import knowledgecafe.model.Reservation;
 import knowledgecafe.model.Student;
 import knowledgecafe.model.Topic;
@@ -87,13 +88,5 @@ public class PagesController {
     public String returnResults(@ModelAttribute Reservation reservation, Model model){
         return "result";
     }*/
-    @PostMapping("/topic-submit")
-    public String topicSubmit(@ModelAttribute Topic topic , Model model, @SessionAttribute("user") Student user) {
-        // Save to DB after updating
-        assert user != null;
-        topic.setStudent(user);
-        topicService.createTopic(topic, topic.getSubject());
-        Set<Topic> studentTopics = user.getTopics();
-        return "redirect:/reservations";
-    }
+
 }

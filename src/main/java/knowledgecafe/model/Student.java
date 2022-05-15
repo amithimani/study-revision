@@ -42,4 +42,9 @@ public class Student {
     @OneToMany(mappedBy = "student")
     private Set<Topic> topics = new HashSet<>();
 
+    public Student(String fullName, String username, String passwordHash) {
+        this.fullName = fullName;
+        this.username = username;
+        this.passwordHash = passwordHash;
+    }
 }

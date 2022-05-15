@@ -40,7 +40,7 @@
             Add New Topic
         </button>
         <!-- Modal -->
-       <div th:insert="fragments/modal :: addtopic" th:with="topic=${topic}"></div>
+       <div th:insert="fragments/modal :: addtopic" th:with="topicPojo=${topicPojo}"></div>
 
         <div>
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchSchedule">

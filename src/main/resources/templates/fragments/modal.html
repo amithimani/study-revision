@@ -84,8 +84,57 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" th:fragment="addtopic" id="addtopic" tabindex="-2" role="dialog" aria-labelledby="searchReservationModalTitle" aria-hidden="true">
+    <div class="modal fade" th:fragment="addtopic" id="addTopic" tabindex="-2" role="dialog" aria-labelledby="addTopicModalTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addTopicModalTitle">Add Study Topic</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
 
+                <div class="modal-body">
+                    <form action="#" th:action="@{/topic-submit}" th:object="${topicPojo}" method="Post" >
+                        <div class="form-group row">
+                            <label for="topic-study-date" class="col-2 col-form-label">Study Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="topic-study-date" th:field="*{topicStudyDate}"
+                                       value="2022-07-22"
+                                       min="2022-01-01" max="2023-12-31">
+                            </div>
+                            <label for="subject" class="col-2 col-form-label">Subject</label>
+                            <div class="col-10">
+                                <select class="form-control" type="type-select" id="subject" th:field="*{subject}">
+                                    <option value="MATHS1">MATHS 1</option>
+                                    <option value="MATHS 2">MATHS 2</option>
+                                    <option value="PHYSICS1">Physics 1</option>
+                                    <option value="PHYSICS2">Physics 2</option>
+                                    <option value="CHEMISTRY1">Chemistry 1</option>
+                                    <option value="CHEMISTRY2">Chemistry 2</option>
+                                </select>
+                            </div>
+                            <label for="chapter" class="col-2 col-form-label">Chapter Name</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="chapter" th:field="*{chapter}">
+                            </div>
+                            <label for="topicName" class="col-2 col-form-label">Topic Name</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="topicName" th:field="*{topicName}">
+                            </div>
+                            <label for="confidenceLevel" class="col-2 col-form-label">Confidence</label>
+                            <div class="col-10">
+                                <input class="form-control" type="text" id="confidenceLevel" th:field="*{confidenceLevel}">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" value="Submit">Save</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div class="modal fade" th:fragment="searchschedule" id="searchSchedule" tabindex="-2" role="dialog" aria-labelledby="searchReservationModalTitle" aria-hidden="true">

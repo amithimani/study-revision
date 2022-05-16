@@ -1,0 +1,125 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div class="modal fade" th:fragment="revisionSearchSubject" id="revisionSearchSubject" tabindex="-1" role="dialog" aria-labelledby="searchBySubjectTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchBySubjectTitle">Search By Subject</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="#" th:action="@{/revision-subject}" th:object="${revisionSearchPojo}" method="post" >
+                        <div class="form-group row">
+                            <label for="searchRevisionStartDate" class="col-2 col-form-label">Start Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="searchRevisionStartDate" name="trip-start" th:field="*{revisionStartDate}"
+                                       value="2022-07-22"
+                                       min="2022-01-01" max="2023-12-31">
+
+                            </div>
+                            <label for="searchRevisionEndDate" class="col-2 col-form-label">End Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="searchRevisionEndDate" name="trip-start" th:field="*{revisionEndDate}"
+                                       value="2022-07-22"
+                                       min="2022-01-01" max="2023-12-31">
+                            </div>
+                            <label for="searchSubject" class="col-2 col-form-label">Subject *</label>
+                            <div class="col-10">
+                                <select class="form-control" type="type-select" id="searchSubject" th:field="*{subject}">
+                                    <option value="MATHS1">MATHS 1</option>
+                                    <option value="MATHS2">MATHS 2</option>
+                                    <option value="PHYSICS1">Physics 1</option>
+                                    <option value="PHYSICS2">Physics 2</option>
+                                    <option value="CHEMISTRY1">Chemistry 1</option>
+                                    <option value="CHEMISTRY2">Chemistry 2</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" value="Submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" th:fragment="searchConfidence" id="searchConfidence" tabindex="-1" role="dialog" aria-labelledby="revisionByConfidenceTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="revisionByConfidenceTitle">Search By Confidence</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="#" th:action="@{/revision-confidence}" th:object="${revisionSearchPojo}" method="post" >
+                        <div class="form-group row">
+                            <label for="searchRevisionConfidenceStartDate" class="col-2 col-form-label">Start Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="searchRevisionConfidenceStartDate" name="trip-start" th:field="*{revisionStartDate}"
+                                       value="2022-07-22"
+                                       min="2022-01-01" max="2023-12-31">
+
+                            </div>
+                            <label for="searchRevisionConfidenceEndDate" class="col-2 col-form-label">End Date</label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="searchRevisionConfidenceEndDate" name="trip-start" th:field="*{revisionEndDate}"
+                                       value="2022-07-22"
+                                       min="2022-01-01" max="2023-12-31">
+                            </div>
+                            <label for="revisionConfidence" class="col-2 col-form-label">Subject *</label>
+                            <div class="col-10">
+                                <select class="form-control" type="type-select" id="revisionConfidence" th:field="*{confidenceLevel}">
+                                    <option value="LIGHTGREEN">Light Green</option>
+                                    <option value="GREEN">Green</option>
+                                    <option value="RED">Red</option>
+                                    <option value="ORANGE">Orange</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" value="Submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" th:fragment="monthlyReportSubject" id="monthlyReportSubject" tabindex="-1" role="dialog" aria-labelledby="monthlyReportSubjectTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="monthlyReportSubjectTitle">Monthly Study Report</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="#" th:action="@{/study-report}" th:object="${revisionSearchPojo}" method="post" >
+                        <div class="form-group row">
+                            <label for="monthlyReportStartDate" class="col-10 col-form-label">Select start Date </label>
+                            <div class="col-10">
+                                <input class="form-control" type="date" id="monthlyReportStartDate" name="trip-start" th:field="*{revisionStartDate}"
+                                       value="2022-05-01"
+                                       min="2022-01-01" max="2023-12-31">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" value="Submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>

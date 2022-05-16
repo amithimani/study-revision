@@ -47,4 +47,9 @@ public class Student {
         this.username = username;
         this.passwordHash = passwordHash;
     }
+
+    @Override
+    public String toString() {
+        return fullName;
+    }
 }

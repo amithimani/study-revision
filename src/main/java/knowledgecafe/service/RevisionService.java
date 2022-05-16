@@ -1,6 +1,8 @@
 package knowledgecafe.service;
 
+import knowledgecafe.model.ConfidenceLevel;
 import knowledgecafe.model.Revision;
+import knowledgecafe.model.Subject;
 import knowledgecafe.model.Topic;
 import knowledgecafe.repos.RevisionRepository;
 import knowledgecafe.util.RevisionConstants;
@@ -35,6 +37,13 @@ public class RevisionService {
         revisionRepository.save(revisionBuilder(topic,studyDate.plusDays(RevisionConstants.THIRD_REVISION_DAYS), 3));
     }
 
+    public Set<Revision> getRevisionsBySubjectBetweenDates(LocalDate startDate, LocalDate endDate, Subject subject){
+        return revisionRepository.getRevisionByRevisionDateIsBetweenAndTopic_SubjectOrderByRevisionDate(startDate, endDate, subject);
+    }
+
+    public Set<Revision> getRevisionsByConfidenceBetweenDates(LocalDate startDate, LocalDate endDate, ConfidenceLevel confidenceLevel){
+        return revisionRepository.getRevisionByRevisionDateIsBetweenAndTopic_ConfidenceLevelOrderByRevisionDate(startDate, endDate, confidenceLevel);
+    }
     private Revision revisionBuilder(Topic topic, LocalDate revisionDate, int revisionNumber){
         Revision revision = new Revision();
         revision.setTopic(topic);

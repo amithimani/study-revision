@@ -5,10 +5,32 @@
     <div class="navbar-nav w-100">
         <a class="navbar-brand text-color" href="/">Revision System Home</a>
     </div>
-        <a sec:authorize="isAnonymous()"
+    <div>
+        <button sec:authorize="isAuthenticated()" type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchSchedule">
+            Search Revision Schedule
+        </button>
+        <div th:insert="fragments/modal :: searchschedule" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
+    </div>
+    <div>
+    <button sec:authorize="isAuthenticated()"
+            type="button" class="btn btn-primary" data-toggle="modal" data-target="#revisionSearchSubject">Search Revision By Subject</button>
+        <div th:insert="fragments/search :: revisionSearchSubject" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
+    </div>
+    <div>
+    <button sec:authorize="isAuthenticated()"
+            type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchConfidence"> Search Revision By Confidence </button>
+        <div th:insert="fragments/search :: searchConfidence" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
+    </div>
+    <div>
+    <button sec:authorize="isAuthenticated()"
+            type="button" class="btn btn-primary" data-toggle="modal" data-target="#monthlyReportSubject">Monthly Study Report</button>
+        <div th:insert="fragments/search :: monthlyReportSubject" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
+    </div>
+    <div>  &nbsp;      </div>
+    <a sec:authorize="isAnonymous()"
            class="navbar-brand text-color" th:href="@{/login}">Log in</a>
-        <a sec:authorize="isAuthenticated()"
-               class="navbar-brand text-color" th:href="@{/logout}">Log out</a>
+    <a sec:authorize="isAuthenticated()"
+               class="navbar-brand text-color" th:href="@{/logout}"> &nbsp; Log out</a>
 </nav>
 </body>
 </html>

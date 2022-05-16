@@ -26,6 +26,7 @@ public class RevisionSearchPojo {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate revisionEndDate;
 
+
    // @NotBlank(message = "Subject is mandatory to select")
     private Subject subject;
 

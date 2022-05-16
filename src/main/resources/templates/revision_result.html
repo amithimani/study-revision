@@ -11,9 +11,9 @@
 <div>
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Your revision results... <span th:text=" ${session.user.getFullName()}"></span></h3>
+        <h3>Your revision results... <span th:text=" ${session.student}"></span></h3>
         <br>
-        <table class="table">
+        <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Subject</th>
@@ -46,12 +46,6 @@
         <!-- Modal -->
        <div th:insert="fragments/modal :: addtopic" th:with="topicPojo=${topicPojo}"></div>
 
-        <div>
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#searchSchedule">
-                Search Schedule
-            </button>
-            <div th:insert="fragments/modal :: searchschedule" th:with="revisionSearchPojo=${revisionSearchPojo}"></div>
-        </div>
     </div>
 </div>
 

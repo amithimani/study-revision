@@ -48,4 +48,7 @@ public class TopicService {
         return topicRepository.getTopicsByConfidenceLevelAndSubject(confidenceLevel, subject);
     }
 
+    public Set<Topic> getTopicsBetweenStudyDates(LocalDate startDate, LocalDate endDate){
+        return topicRepository.getTopicsByInitialStudyDateIsBetween(startDate, endDate);
+    }
 }

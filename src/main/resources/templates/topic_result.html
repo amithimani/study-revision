@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Revision</title>
+    <title>Topic Results</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
@@ -11,39 +11,38 @@
 <div>
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Welcome <span th:text=" ${session.student.getFullName()}"></span></h3>
+        <h3> <span th:text=" ${session.student}"></span> 's monthly study report...</h3>
         <br>
         <table class="table table-striped">
             <thead>
                 <tr>
+                    <th scope="col">Study Date</th>
                     <th scope="col">Subject</th>
                     <th scope="col">Chapter</th>
                     <th scope="col">Topic</th>
-                    <th scope="col"> Confidence Level </th>
-                    <th scope="col">First Study Date</th>
-                    <th scope="col"> Edit TBD </th>
+                    <th scope="col">Confidence Level </th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="revision : ${session.todaysRevisions}">
-                    <td th:text="${revision.getTopic().getSubject()}"></td>
-                    <td th:text="${revision.getTopic().getChapterName()}"></td>
-                    <td th:text="${revision.getTopic().getTopicName()}"></td>
-                    <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
-                    <td th:text="${revision.getTopic().getInitialStudyDate()}"></td>
-                    <td th:text="TBD"></td>
+                <tr th:each="topic : ${session.monthlyStudyTopics}">
+                    <td th:text="${topic.getInitialStudyDate()}"></td>
+                    <td th:text="${topic.getSubject()}"></td>
+                    <td th:text="${topic.getChapterName()}"></td>
+                    <td th:text="${topic.getTopicName()}"></td>
+                    <td th:text="${topic.getConfidenceLevel()}"></td>
                 </tr>
             </tbody>
         </table>
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addTopic">
+        <button type="button" class="btn btn-success btn-lg my-2" data-toggle="modal" data-target="#addTopic">
             Add New Topic
         </button>
         <!-- Modal -->
        <div th:insert="fragments/modal :: addtopic" th:with="topicPojo=${topicPojo}"></div>
+        <br><br>
+        <a href="/revision-today" class="btn btn-success btn-lg my-2">See Today's Revision Schedule</a>
 
     </div>
-
 </div>
 
 <script th:src="@{/webjars/jquery/3.0.0/jquery.min.js}"></script>

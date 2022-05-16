@@ -1,7 +1,7 @@
 package knowledgecafe.model;
 
 public enum ConfidenceLevel {
-    LIGHTGREEN("LIGHTGREEN"), GREEN("GREEN"), RED("RED"), ORANGE("ORANGE");
+    LIGHTGREEN("Confident"), GREEN("Very Confident"), RED("Not Confident"), ORANGE("Little Confident");
 
     private final String name;
 

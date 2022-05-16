@@ -1,7 +1,6 @@
 package knowledgecafe.config;
 
 import knowledgecafe.service.StudentService;
-import knowledgecafe.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final UserDetailsServiceImpl userDetailsService;
-
     private final StudentService studentService;
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
@@ -24,8 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             "/h2-console/**", "/h2/**", "/webjars/**"
     };
 
-    public WebSecurityConfig(UserDetailsServiceImpl userDetailsService, StudentService studentService, BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userDetailsService = userDetailsService;
+    public WebSecurityConfig(StudentService studentService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.studentService = studentService;
     }
@@ -52,7 +48,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(bCryptPasswordEncoder);
+        auth.userDetailsService(studentService).passwordEncoder(bCryptPasswordEncoder);
     }
 
 }

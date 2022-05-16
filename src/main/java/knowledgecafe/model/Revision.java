@@ -22,7 +22,7 @@ public class Revision {
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
+            generator = "revision_sequence"
     )
     private Long id;
 

@@ -17,7 +17,7 @@
                             <div class="col-10">
                                 <input class="form-control" type="date" id="searchRevisionStartDate" name="trip-start" th:field="*{revisionStartDate}"
                                        value="2022-07-22"
-                                       min="2022-01-01" max="2023-12-31">
+                                       min="2022-01-01" max="2023-12-31" th:required="required">
 
                             </div>
                             <label for="searchRevisionEndDate" class="col-2 col-form-label">End Date</label>
@@ -64,7 +64,7 @@
                             <div class="col-10">
                                 <input class="form-control" type="date" id="searchRevisionConfidenceStartDate" name="trip-start" th:field="*{revisionStartDate}"
                                        value="2022-07-22"
-                                       min="2022-01-01" max="2023-12-31">
+                                       min="2022-01-01" max="2023-12-31" th:required="required">
 
                             </div>
                             <label for="searchRevisionConfidenceEndDate" class="col-2 col-form-label">End Date</label>
@@ -73,13 +73,13 @@
                                        value="2022-07-22"
                                        min="2022-01-01" max="2023-12-31">
                             </div>
-                            <label for="revisionConfidence" class="col-2 col-form-label">Subject *</label>
+                            <label for="revisionConfidence" class="col-2 col-form-label">Confidence Level </label>
                             <div class="col-10">
                                 <select class="form-control" type="type-select" id="revisionConfidence" th:field="*{confidenceLevel}">
-                                    <option value="LIGHTGREEN">Light Green</option>
-                                    <option value="GREEN">Green</option>
-                                    <option value="RED">Red</option>
-                                    <option value="ORANGE">Orange</option>
+                                    <option value="LIGHTGREEN" >Confident</option>
+                                    <option value="GREEN">Very Confident</option>
+                                    <option value="RED" >Not Confident</option>
+                                    <option value="ORANGE" >Little Confident</option>
                                 </select>
                             </div>
                         </div>
@@ -109,7 +109,7 @@
                             <div class="col-10">
                                 <input class="form-control" type="date" id="monthlyReportStartDate" name="trip-start" th:field="*{revisionStartDate}"
                                        value="2022-05-01"
-                                       min="2022-01-01" max="2023-12-31">
+                                       min="2022-01-01" max="2023-12-31" th:required="required">
                             </div>
                         </div>
                         <div class="modal-footer">

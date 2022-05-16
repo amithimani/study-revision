@@ -26,7 +26,7 @@ public class Student {
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
+            generator = "student_sequence"
     )
     private Long id;
 

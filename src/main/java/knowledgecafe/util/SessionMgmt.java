@@ -3,7 +3,6 @@ package knowledgecafe.util;
 import knowledgecafe.dto.RevisionSearchPojo;
 import knowledgecafe.dto.TopicPojo;
 import knowledgecafe.model.Student;
-import knowledgecafe.model.User;
 import knowledgecafe.service.StudentService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;

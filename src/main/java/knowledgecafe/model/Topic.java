@@ -26,7 +26,7 @@ public class Topic {
     )
     @GeneratedValue(
             strategy = GenerationType.SEQUENCE,
-            generator = "primary_sequence"
+            generator = "topic_sequence"
     )
     private Long id;
 

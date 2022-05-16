@@ -32,15 +32,12 @@ public class RevisionController {
     final StudentService studentService;
     final TopicService topicService;
     final RevisionService revisionService;
-    final UserService userService;
 
 
-
-    public RevisionController(StudentService studentService, RevisionService revisionService, TopicService topicService, UserService userService) {
+    public RevisionController(StudentService studentService, RevisionService revisionService, TopicService topicService) {
         this.studentService = studentService;
         this.revisionService = revisionService;
         this.topicService = topicService;
-        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -139,7 +136,7 @@ public class RevisionController {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
 
         // Save topic DB
-        Student student = studentService.getStudentByUsername(session.getAttribute("student").toString());
+        Student student = (Student) session.getAttribute("student");
         Topic topic = DataConversion.TopicPojoToTopicBean(topicPojo, student);
         topicService.createTopic(topic);
 

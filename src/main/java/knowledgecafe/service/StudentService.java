@@ -1,14 +1,16 @@
 package knowledgecafe.service;
 
 import knowledgecafe.model.Student;
-import knowledgecafe.model.User;
 import knowledgecafe.repos.StudentRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
-public class StudentService {
+public class StudentService implements UserDetailsService {
 
     private final StudentRepository studentRepository;
 
@@ -40,4 +42,16 @@ public class StudentService {
         studentRepository.deleteById(id);
     }
 
+    @Override
+    public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
+        Student student = studentRepository.findStudentByUsername(s);
+        if (student == null) {
+            throw new UsernameNotFoundException(s);
+        }
+
+        UserDetails userDetails = org.springframework.security.core.userdetails.User.withUsername(
+                student.getUsername()).password(student.getPasswordHash()).roles("USER").build();
+
+        return userDetails;
+    }
 }

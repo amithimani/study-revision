@@ -1,8 +1,8 @@
 package knowledgecafe.model;
 
 public enum Subject {
-    MATHS1("MATHS1"), MATHS2("MATHS2"), CHEMISTRY1("CHEMISTRY1"), PHYSICS1("PHYSICS1"),
-    PHYSICS2("PHYSICS2"), CHEMISTRY2("CHEMISTRY2");
+    MATHS1("Maths 1"), MATHS2("Maths 2"), CHEMISTRY1("Chemistry 1"), PHYSICS1("Physics 1"),
+    PHYSICS2("Physics 2"), CHEMISTRY2("Chemistry 2");
 
     private final String name;
 

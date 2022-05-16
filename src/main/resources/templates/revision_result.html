@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Revision</title>
+    <title>Revision Results</title>
 
     <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
@@ -11,7 +11,7 @@
 <div>
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Welcome <span th:text=" ${session.user.getFullName()}"></span></h3>
+        <h3>Your revision results... <span th:text=" ${session.user.getFullName()}"></span></h3>
         <br>
         <table class="table">
             <thead>
@@ -19,16 +19,20 @@
                     <th scope="col">Subject</th>
                     <th scope="col">Chapter</th>
                     <th scope="col">Topic</th>
-                    <th scope="col"> Confidence Level </th>
+                    <th scope="col">Revision Number </th>
+                    <th scope="col">Revision Date </th>
+                    <th scope="col">Confidence Level </th>
                     <th scope="col">First Study Date</th>
                     <th scope="col"> Edit TBD </th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="revision : ${session.todaysRevisions}">
+                <tr th:each="revision : ${session.revisionsByDate}">
                     <td th:text="${revision.getTopic().getSubject()}"></td>
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
                     <td th:text="${revision.getTopic().getTopicName()}"></td>
+                    <td th:text="${revision.getRevisionNumber()}"></td>
+                    <td th:text="${revision.getRevisionDate()}"></td>
                     <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
                     <td th:text="${revision.getTopic().getInitialStudyDate()}"></td>
                     <td th:text="TBD"></td>

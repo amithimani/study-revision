@@ -42,7 +42,7 @@ public class StudyRevisionSystemApplication implements WebMvcConfigurer {
     SpringApplication.run(StudyRevisionSystemApplication.class, args);
   }
 
-  @Bean
+  /*@Bean
   public CommandLineRunner loadData(
       UserRepository userRepository,
       StudentRepository studentRepository,
@@ -59,7 +59,7 @@ public class StudyRevisionSystemApplication implements WebMvcConfigurer {
         capacityRepository.save(new Capacity(amenityType, initialCapacities.get(amenityType)));
       }
     };
-  }
+  }*/
 
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {

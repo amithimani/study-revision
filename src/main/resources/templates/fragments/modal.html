@@ -103,11 +103,11 @@
                                        value="2022-07-22"
                                        min="2022-01-01" max="2023-12-31">
                             </div>
-                            <label for="subject" class="col-2 col-form-label">Subject</label>
+                            <label for="subject" class="col-2 col-form-label">Subject *</label>
                             <div class="col-10">
                                 <select class="form-control" type="type-select" id="subject" th:field="*{subject}">
                                     <option value="MATHS1">MATHS 1</option>
-                                    <option value="MATHS 2">MATHS 2</option>
+                                    <option value="MATHS2">MATHS 2</option>
                                     <option value="PHYSICS1">Physics 1</option>
                                     <option value="PHYSICS2">Physics 2</option>
                                     <option value="CHEMISTRY1">Chemistry 1</option>
@@ -124,7 +124,12 @@
                             </div>
                             <label for="confidenceLevel" class="col-2 col-form-label">Confidence</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" id="confidenceLevel" th:field="*{confidenceLevel}">
+                            <select class="form-control" type="type-select" id="confidenceLevel" th:field="*{confidenceLevel}">
+                                <option value="LIGHTGREEN">Light Green</option>
+                                <option value="GREEN">Green</option>
+                                <option value="RED">Red</option>
+                                <option value="ORANGE">Orange</option>
+                            </select>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

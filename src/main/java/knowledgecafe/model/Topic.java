@@ -37,14 +37,11 @@ public class Topic {
     @Column(nullable = false, unique = false)
     private String topicName;
 
-    @Column(nullable = false, unique = false)
+    @Column(nullable = false)
     private Subject subject;
 
     @Column(nullable = false, unique = false)
     private String chapterName;
-
-    @Column(nullable = true, unique = false)
-    private String subTopic;
 
     @Column(nullable = false ) //TODO: default value population
     private ConfidenceLevel confidenceLevel;

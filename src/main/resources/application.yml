@@ -1,8 +1,8 @@
 spring:
   datasource:
-    url: ${JDBC_DATABASE_URL:jdbc:h2:mem:study-revision-system}
-    username: ${JDBC_DATABASE_USERNAME:sa}
-    password: ${JDBC_DATABASE_PASSWORD:}
+    url: ${JDBC_DATABASE_URL:jdbc:h2:file:./data/study-revison-system}
+    username: ${JDBC_DATABASE_USERNAME:amit}
+    password: ${JDBC_DATABASE_PASSWORD:bmebme}
   dbcp2:
     max-wait-millis: 30000
     validation-query: "SELECT 1"

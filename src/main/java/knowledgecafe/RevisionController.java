@@ -6,18 +6,21 @@ import knowledgecafe.model.*;
 import knowledgecafe.service.*;
 import knowledgecafe.util.DataConversion;
 import org.apache.tomcat.jni.Local;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 @Controller
@@ -27,9 +30,6 @@ public class RevisionController {
     final TopicService topicService;
     final RevisionService revisionService;
     final UserService userService;
-    final static int firstRevisionDaysToAdd = 1;
-    final static int SecondRevisionDaysToAdd = 7;
-    final static int ThirdRevisionDaysToAdd = 21;
 
 
 
@@ -39,6 +39,12 @@ public class RevisionController {
         this.topicService = topicService;
         this.userService = userService;
     }
+
+    @GetMapping("/")
+    public String index(Model model) {
+        return "index";
+    }
+
 
     @GetMapping("/revision-today")
     public String revision_today(Model model, HttpSession session) {
@@ -64,16 +70,20 @@ public class RevisionController {
 
 
     @PostMapping("/revision-search-date")
-    public String revisionSearchByDate(@ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {
+    public String revisionSearchByDate(@Valid @ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {
         // Save to DB after updating
 
         LocalDate revisionStartDate = revision.getRevisionStartDate();
         LocalDate revisionEndDate = revision.getRevisionEndDate();
-
+        if (revisionEndDate == null){
+            revisionEndDate = revisionStartDate;
+        }
         Set<Revision> revisionsByDate = revisionService.getRevisionTopicsBetweenDate(revisionStartDate, revisionEndDate);
         session.setAttribute("revisionsByDate", revisionsByDate);
+        model.addAttribute("topicPojo", new TopicPojo());
+        model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
 
-        return "revision";
+        return "revision_result";
     }
 /*
     @PostMapping("/reservations-search")
@@ -93,11 +103,29 @@ public class RevisionController {
     }*/
 
     @PostMapping("/topic-submit")
-    public String topicSubmit(@ModelAttribute TopicPojo topic , Model model, HttpSession session) {
-        // Save to DB after updating
+    public String topicSubmit(@Valid @ModelAttribute TopicPojo topicPojo , Model model, HttpSession session) {
+        // Save topic DB
         Student student = studentService.getStudentByUsername(session.getAttribute("student").toString());
-        topicService.createTopic(DataConversion.TopicPojoToTopicBean(topic, student));
+        Topic topic = DataConversion.TopicPojoToTopicBean(topicPojo, student);
+        topicService.createTopic(topic);
 
-        return "index";
+        //Update revision Schedule
+        revisionService.createRevisions(topicPojo.getTopicStudyDate(),topic );
+
+        model.addAttribute("message", "Topic Created successfully");
+        model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
+        return "revision";
+    }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        return errors;
     }
 }

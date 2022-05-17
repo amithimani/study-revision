@@ -12,12 +12,13 @@ import javax.servlet.http.HttpSession;
 
 public class SessionMgmt {
 
-    public static void populateSessionAttributes(Model model, HttpSession session, StudentService studentService){
+    public static Student populateSessionAttributes(Model model, HttpSession session, StudentService studentService){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String name = principal.getUsername();
         Student student = studentService.getStudentByUsername(name);
         session.setAttribute("student", student);
         model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
         model.addAttribute("topicPojo", new TopicPojo());
+        return student;
     }
 }

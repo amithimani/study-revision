@@ -30,21 +30,21 @@
                                     <option value="CHEMISTRY2">Chemistry 2</option>
                                 </select>
                             </div>
-                            <label for="chapter" class="col-2 col-form-label" th:required="required">Chapter Name</label>
+                            <label for="chapter" class="col-2 col-form-label">Chapter Name</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" id="chapter" th:field="*{chapter}">
+                                <input class="form-control" type="text" id="chapter" th:required="required" th:field="*{chapter}">
                             </div>
-                            <label for="topicName" class="col-2 col-form-label" th:required="required">Topic Name</label>
+                            <label for="topicName" class="col-2 col-form-label">Topic Name</label>
                             <div class="col-10">
-                                <input class="form-control" type="text" id="topicName" th:field="*{topicName}">
+                                <input class="form-control" type="text" id="topicName" th:required="required" th:field="*{topicName}">
                             </div>
                             <label for="confidenceLevel" class="col-2 col-form-label">Confidence </label>
                             <div class="col-10">
                                 <select class="form-control" type="type-select" id="confidenceLevel" th:field="*{confidenceLevel}">
                                     <option value="LIGHTGREEN"  >Confident</option>
                                     <option value="GREEN" >Very Confident</option>
-                                    <option value="RED" >Not Confident</option>
                                     <option value="ORANGE" >Little Confident</option>
+                                    <option value="RED" >Not Confident</option>
                                 </select>
                             </div>
                             <div class="modal-footer">

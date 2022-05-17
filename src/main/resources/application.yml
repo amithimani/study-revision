@@ -26,3 +26,4 @@ spring:
           new_generator_mappings: true
 springdoc:
   pathsToMatch: /api/**
+

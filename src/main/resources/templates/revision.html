@@ -11,7 +11,7 @@
 <div>
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Welcome <span th:text=" ${session.student.getFullName()}"></span></h3>
+        <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
         <table class="table table-striped">
             <thead>
@@ -21,7 +21,7 @@
                     <th scope="col">Topic</th>
                     <th scope="col"> Confidence Level </th>
                     <th scope="col">First Study Date</th>
-                    <th scope="col"> Edit TBD </th>
+                    <th scope="col">Status TBD</th>
                 </tr>
             </thead>
             <tbody>
@@ -30,8 +30,10 @@
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
                     <td th:text="${revision.getTopic().getTopicName()}"></td>
                     <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
-                    <td th:text="${revision.getTopic().getInitialStudyDate()}"></td>
-                    <td th:text="TBD"></td>
+                    <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
+                    <td style="text-align:center;">
+                        <input type="checkbox" name="revisionStatus">
+                    </td>
                 </tr>
             </tbody>
         </table>

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -32,7 +33,7 @@ public class RevisionController {
     final StudentService studentService;
     final TopicService topicService;
     final RevisionService revisionService;
-
+    final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd-MMM-yyyy");
 
     public RevisionController(StudentService studentService, RevisionService revisionService, TopicService topicService) {
         this.studentService = studentService;
@@ -55,6 +56,7 @@ public class RevisionController {
         session.setAttribute("todaysRevisions", todaysRevisionTopic);
         Topic topic = new Topic();
         model.addAttribute("topic", topic);
+        session.setAttribute("message", "Today's Revision Schedule...");
         return "revision";
 
 
@@ -75,7 +77,8 @@ public class RevisionController {
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionTopicsBetweenDate(revisionStartDate, revisionEndDate);
         session.setAttribute("revisionsByDate", revisionsByDate);
-
+        String message = "Revisions between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
+        session.setAttribute("message", message);
         return "revision_result";
     }
 
@@ -95,6 +98,8 @@ public class RevisionController {
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionsBySubjectBetweenDates(revisionStartDate, revisionEndDate, searchSubject);
         session.setAttribute("revisionsByDate", revisionsByDate);
+        String message = "Revisions for Subject "+ searchSubject +" between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
+        session.setAttribute("message", message);
 
         return "revision_result";
     }
@@ -112,19 +117,23 @@ public class RevisionController {
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionsByConfidenceBetweenDates(revisionStartDate, revisionEndDate, confidenceLevel);
         session.setAttribute("revisionsByDate", revisionsByDate);
+        String message = "Revisions as per Confidence "+ confidenceLevel+" between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
+        session.setAttribute("message", message);
 
         return "revision_result";
     }
 
     @PostMapping("/study-report")
     public String studyReport(@Valid @ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {
-        SessionMgmt.populateSessionAttributes(model, session, studentService);
+        Student student = SessionMgmt.populateSessionAttributes(model, session, studentService);
 
         // Save to DB after updating
         LocalDate studyStart = revision.getRevisionStartDate();
         LocalDate studyEnd = studyStart.plusMonths(1);
         Set<Topic> monthlyStudy = topicService.getTopicsBetweenStudyDates(studyStart, studyEnd);
 
+        String message = student.getFullName()+ "'s Monthly study report between " + studyStart.format(dateTimeFormatter) + " and  " + studyEnd.format(dateTimeFormatter);
+        session.setAttribute("message", message);
         session.setAttribute("monthlyStudyTopics", monthlyStudy);
 
         return "topic_result";
@@ -141,10 +150,14 @@ public class RevisionController {
         topicService.createTopic(topic);
 
         //Update revision Schedule
-        revisionService.createRevisions(topicPojo.getTopicStudyDate(),topic );
+        revisionService.createRevisions(topicPojo.getTopicStudyDate(), topic );
 
-        model.addAttribute("message", "Topic Created successfully");
-        return "revision";
+        Set<Topic> currentDayTopics = topicService.getTopicsBetweenStudyDates(topicPojo.getTopicStudyDate(), topicPojo.getTopicStudyDate());
+        session.setAttribute("monthlyStudyTopics", currentDayTopics);
+
+        String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, Below is today's study summary...";
+        session.setAttribute("message", message);
+        return "topic_result";
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)

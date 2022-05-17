@@ -9,20 +9,22 @@
 <body>
 
 <div>
-    <div th:insert="fragments/Header :: nav"></div>
-    <div class="text-light" style="background-image: url('https://source.unsplash.com/1920x1080/?nature');
+
+    <div class="text-light" style="background-image: url('error.jpeg');
                                    position: absolute;
                                    left: 0;
                                    top: 0;
-                                   opacity: 0.6;
+                                   opacity: 0.2;
                                    z-index: -1;
                                    min-height: 100vh;
                                    min-width: 100vw;">
     </div>
 
     <div class="container" style="padding-top: 20vh; display: flex; flex-direction: column; align-items: center;">
-        <h1 class="display-3">Revision made easy...</h1>
-        <p class="lead">Technical Error... retry the operation</p>
+        <h1 class="display-3">
+        <p class="lead">Technical Error... retry the operation with all mandatory fields
+            <img src="error.jpeg">
+        </p> </h1>
         <a href="/revision-today" class="btn btn-success btn-lg my-2">See Today's Revision Schedule</a>
     </div>
 </div>

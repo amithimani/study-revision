@@ -9,9 +9,9 @@
 <body>
 
 <div>
-    <div th:insert="fragments/Header :: nav"></div>
+    <div th:insert="fragments/Header :: nav"> </div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3> <span th:text=" ${session.student}"></span> 's monthly study report...</h3>
+        <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
         <table class="table table-striped">
             <thead>
@@ -25,7 +25,7 @@
             </thead>
             <tbody>
                 <tr th:each="topic : ${session.monthlyStudyTopics}">
-                    <td th:text="${topic.getInitialStudyDate()}"></td>
+                    <td th:text="${#temporals.format(topic.getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
                     <td th:text="${topic.getSubject()}"></td>
                     <td th:text="${topic.getChapterName()}"></td>
                     <td th:text="${topic.getTopicName()}"></td>
@@ -37,9 +37,8 @@
         <button type="button" class="btn btn-success btn-lg my-2" data-toggle="modal" data-target="#addTopic">
             Add New Topic
         </button>
-        <!-- Modal -->
        <div th:insert="fragments/modal :: addtopic" th:with="topicPojo=${topicPojo}"></div>
-        <br><br>
+        <br>
         <a href="/revision-today" class="btn btn-success btn-lg my-2">See Today's Revision Schedule</a>
 
     </div>

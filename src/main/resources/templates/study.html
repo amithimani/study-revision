@@ -12,6 +12,7 @@
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
         <h3>Welcome <span th:text=" ${session.student.getFullName()}"></span></h3>
+        <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
         <table class="table table-striped">
             <thead>

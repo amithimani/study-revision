@@ -11,7 +11,7 @@
 <div>
     <div th:insert="fragments/Header :: nav"></div>
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
-        <h3>Your revision results... <span th:text=" ${session.student}"></span></h3>
+        <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
         <table class="table table-striped">
             <thead>
@@ -32,9 +32,9 @@
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
                     <td th:text="${revision.getTopic().getTopicName()}"></td>
                     <td th:text="${revision.getRevisionNumber()}"></td>
-                    <td th:text="${revision.getRevisionDate()}"></td>
+                    <td th:text="${#temporals.format(revision.getRevisionDate(), 'dd-MMM-yyyy')}"></td>
                     <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
-                    <td th:text="${revision.getTopic().getInitialStudyDate()}"></td>
+                    <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(),'dd-MMM-yyyy')}"></td>
                     <td th:text="TBD"></td>
                 </tr>
             </tbody>

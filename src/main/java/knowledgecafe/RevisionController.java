@@ -74,11 +74,6 @@ public class RevisionController {
         // return "index";
     }
 
-    @PostMapping("revisions-update")
-    public String revisionUpdateFull(@Valid @ModelAttribute LinkedHashSet<Revision> revisions,  Model model, HttpSession session){
-        return "revision_form";
-    }
-
 
     @PostMapping("/revision-search-date")
     public String revisionSearchByDate(@Valid @ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {

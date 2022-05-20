@@ -6,6 +6,7 @@ import knowledgecafe.repos.StudentRepository;
 import knowledgecafe.repos.TopicRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDate;
@@ -50,5 +51,10 @@ public class TopicService {
 
     public Set<Topic> getTopicsBetweenStudyDates(LocalDate startDate, LocalDate endDate){
         return topicRepository.getTopicsByInitialStudyDateIsBetween(startDate, endDate);
+    }
+
+    @Transactional
+    public int updateTopicConfidenceById(ConfidenceLevel confidenceLevel, Long id) {
+        return topicRepository.updateTopicConfidenceById(confidenceLevel, id);
     }
 }

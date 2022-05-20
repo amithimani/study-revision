@@ -25,7 +25,7 @@ public class RevisionService {
     }
 
     public Set<Revision> getRevisionTopicsBetweenDate(LocalDate startDate, LocalDate endDate){
-        return revisionRepository.getRevisionByRevisionDateIsBetween(startDate, endDate);
+        return revisionRepository.getRevisionByRevisionDateIsBetweenOrderByRevisionDate(startDate, endDate);
     }
 
     public void createRevisions(LocalDate studyDate, Topic topic){

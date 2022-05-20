@@ -73,7 +73,7 @@
                                        value="2022-07-22"
                                        min="2022-01-01" max="2023-12-31">
                             </div>
-                            <label for="revisionConfidence" class="col-2 col-form-label">Confidence Level </label>
+                            <label for="revisionConfidence" class="col-10 col-form-label">Confidence Level </label>
                             <div class="col-10">
                                 <select class="form-control" type="type-select" id="revisionConfidence" th:field="*{confidenceLevel}">
                                     <option value="LIGHTGREEN" >Confident</option>
@@ -115,6 +115,41 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary" value="Submit">Search</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" th:fragment="dailyTopicRevisionUpdate" id="dailyTopicRevisionUpdate" tabindex="-1" role="dialog" aria-labelledby="dailyTopicRevisionUpdateTitle" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="dailyTopicRevisionUpdateTitle">Update Confidence Level</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body">
+                    <form action="#" th:action="@{/topic-update}" th:object="${topic}" method="post" >
+                        <div class="form-group row">
+                            <span th:value="${topic.getSubject}" />
+                            <label for="revisionConfidenceUpdate" class="col-10 col-form-label">Confidence Level</label>
+                            <div class="col-10">
+                            <select class="form-control" type="type-select" id="revisionConfidenceUpdate" th:field="*{confidenceLevel}">
+                                <option value="LIGHTGREEN" >Confident</option>
+                                <option value="GREEN">Very Confident</option>
+                                <option value="RED" >Not Confident</option>
+                                <option value="ORANGE" >Little Confident</option>
+                            </select>
+                            </div>
+                            <input type="hidden" th:value="${topic.id}" name="id"/>
+
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary" value="Submit">Save</button>
+                            </div>
                         </div>
                     </form>
                 </div>

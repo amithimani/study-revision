@@ -37,4 +37,6 @@ public class TopicPojo {
     @NotBlank(message = "Confidence level selection is mandatory")
     @Size(max=10)
     private String confidenceLevel;
+
+    private Long topicID;
 }

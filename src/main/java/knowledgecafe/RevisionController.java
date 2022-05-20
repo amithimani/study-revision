@@ -1,31 +1,24 @@
 package knowledgecafe;
 
+import knowledgecafe.dto.TopicsListPojo;
 import knowledgecafe.dto.RevisionSearchPojo;
 import knowledgecafe.dto.TopicPojo;
 import knowledgecafe.model.*;
 import knowledgecafe.service.*;
 import knowledgecafe.util.DataConversion;
 import knowledgecafe.util.SessionMgmt;
-import org.apache.tomcat.jni.Local;
-import org.dom4j.rule.Mode;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeFormatterBuilder;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class RevisionController {
@@ -44,6 +37,7 @@ public class RevisionController {
     @GetMapping("/")
     public String index(Model model) {
         model.addAttribute("revisionSearchPojo", new RevisionSearchPojo());
+        model.addAttribute("topicPojo", new TopicPojo());
         return "index";
     }
 
@@ -51,16 +45,32 @@ public class RevisionController {
     public String revision_today(Model model, HttpSession session) {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
         Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
-
-        // This should always be the case
+        //TODO: convert Revision to DTO to send to UI
         session.setAttribute("todaysRevisions", todaysRevisionTopic);
         Topic topic = new Topic();
         model.addAttribute("topic", topic);
         session.setAttribute("message", "Today's Revision Schedule...");
-        return "revision";
+        session.setAttribute("updatedTopics", new TopicsListPojo());
+        model.addAttribute("updatedTopicsModel", new TopicsListPojo());
+        return "revision_form";
+    }
+
+    @PostMapping("/topic-update")
+    public String topic_update(@Valid @ModelAttribute Topic topic, Model model, HttpSession session) {
+        SessionMgmt.populateSessionAttributes(model, session, studentService);
+
+        topicService.updateTopicConfidenceById(topic.getConfidenceLevel(), topic.getId());
+        //topicService.updateTopicConfidenceById(to)
+        Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
+
+        // This should always be the case
+        session.setAttribute("todaysRevisions", todaysRevisionTopic);
+
+        session.setAttribute("message", "Today's Updated Revision Schedule...");
+        return "revision_form";
 
 
-       // return "index";
+        // return "index";
     }
 
 
@@ -155,7 +165,7 @@ public class RevisionController {
         Set<Topic> currentDayTopics = topicService.getTopicsBetweenStudyDates(topicPojo.getTopicStudyDate(), topicPojo.getTopicStudyDate());
         session.setAttribute("monthlyStudyTopics", currentDayTopics);
 
-        String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, Below is today's study summary...";
+        String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, "+"\n"+" Below is study summary for " + topicPojo.getTopicStudyDate().format(dateTimeFormatter) ;
         session.setAttribute("message", message);
         return "topic_result";
     }

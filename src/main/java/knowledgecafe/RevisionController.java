@@ -19,6 +19,7 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.logging.Logger;
 
 @Controller
 public class RevisionController {
@@ -71,6 +72,11 @@ public class RevisionController {
 
 
         // return "index";
+    }
+
+    @PostMapping("revisions-update")
+    public String revisionUpdateFull(@Valid @ModelAttribute LinkedHashSet<Revision> revisions,  Model model, HttpSession session){
+        return "revision_form";
     }
 
 

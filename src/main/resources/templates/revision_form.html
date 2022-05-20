@@ -13,32 +13,44 @@
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
         <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
+        <!-- form class="form-control" action="#" th:action="@{/revisions-update}" th:object="${session.todaysRevisions}" method="post" -->
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th scope="col">Subject</th>
                     <th scope="col">Chapter</th>
                     <th scope="col">Topic</th>
+                    <th scope="col">Revision Number</th>
                     <th scope="col"> Confidence Level </th>
                     <th scope="col">First Study Date</th>
-                    <th scope="col">Update</th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="revision : ${session.todaysRevisions}">
-                <div th:with="topic = ${revision.getTopic()}">
+                <div th:with="myTopic=${revision.getTopic()}">
                     <td th:text="${revision.getTopic().getSubject()}"></td>
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
                     <td th:text="${revision.getTopic().getTopicName()}"></td>
-                    <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
-                    <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
+                    <td th:text="${revision.getRevisionNumber()}" ></td>
                     <td>
-                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#dailyTopicRevisionUpdate">
-                            Update Confidence Level
-                        </button>
-                        <!-- Modal -->
-                        <div th:insert="fragments/search :: dailyTopicRevisionUpdate" th:with="topic=${topic}"></div>
+                        <form action="#" th:action="@{/topic-update}" th:object="${myTopic}" method="post">
+                            <input type="hidden" th:value="${myTopic.id}" name="id"/>
+
+                            <div class="col-10">
+                            <select class="form-control" type="type-select" id="revisionConfidenceUpdate" th:value="${myTopic.confidenceLevel}" name="confidenceLevel">
+                                <option th:text="${revision.getTopic().getConfidenceLevel()}"> </option>
+                                <option value="LIGHTGREEN">Confident</option>
+                                <option value="GREEN">Very Confident</option>
+                                <option value="RED" >Not Confident</option>
+                                <option value="ORANGE" >Little Confident</option>
+                            </select>
+                                <button type="submit" class="btn btn-primary" value="submit">Update</button>
+                        </div>
+
+                        </form>
                     </td>
+                    <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
+
                 </div>
                 </tr>
             </tbody>

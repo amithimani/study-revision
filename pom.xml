@@ -12,6 +12,7 @@
     <artifactId>study-revision</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>study-revision</name>
+    <packaging>war</packaging>
 
     <properties>
         <java.version>14</java.version>

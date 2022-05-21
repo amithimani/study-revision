@@ -6,6 +6,8 @@ import knowledgecafe.util.LoggingInterceptor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -14,7 +16,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @SpringBootApplication
-public class StudyRevisionSystemApplication implements WebMvcConfigurer {
+public class StudyRevisionSystemApplication extends SpringBootServletInitializer {
 
 
 
@@ -37,4 +39,10 @@ public class StudyRevisionSystemApplication implements WebMvcConfigurer {
   public BCryptPasswordEncoder bCryptPasswordEncoder() {
     return new BCryptPasswordEncoder();
   }
+
+  @Override
+  protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {
+    return builder.sources(StudyRevisionSystemApplication.class);
+  }
+
 }

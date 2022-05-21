@@ -1,6 +1,9 @@
 package knowledgecafe;
 
+import knowledgecafe.model.Student;
+import knowledgecafe.repos.StudentRepository;
 import knowledgecafe.util.LoggingInterceptor;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -14,15 +17,21 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class StudyRevisionSystemApplication implements WebMvcConfigurer {
 
 
-  @Override
-  public void addInterceptors(InterceptorRegistry registry) {
-    registry.addInterceptor(new LoggingInterceptor()).addPathPatterns("/**");
-  }
 
   public static void main(String[] args) {
     SpringApplication.run(StudyRevisionSystemApplication.class, args);
   }
 
+  @Bean
+  public CommandLineRunner loadData(
+          StudentRepository studentRepository) {
+    return (args) -> {
+      if(studentRepository.findStudentByUsername("krish") == null) {
+        studentRepository.save(
+                new Student("Krish Himani", "krish", "$2a$10$kc9i7dLtroyOkcFICEiAJ.HOlRtsg2A2tApz/vpMxx5.bsaA3jJOi"));
+      }
+    };
+  }
 
   @Bean
   public BCryptPasswordEncoder bCryptPasswordEncoder() {

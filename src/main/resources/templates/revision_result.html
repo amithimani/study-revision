@@ -23,11 +23,10 @@
                     <th scope="col">Revision Date </th>
                     <th scope="col">Confidence Level </th>
                     <th scope="col">First Study Date</th>
-                    <th scope="col"> Edit TBD </th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="revision : ${session.revisionsByDate}">
+                <tr th:each="revision : ${session.revisions}">
                     <td th:text="${revision.getTopic().getSubject()}"></td>
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
                     <td th:text="${revision.getTopic().getTopicName()}"></td>
@@ -35,7 +34,6 @@
                     <td th:text="${#temporals.format(revision.getRevisionDate(), 'dd-MMM-yyyy')}"></td>
                     <td th:text="${revision.getTopic().getConfidenceLevel()}"></td>
                     <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(),'dd-MMM-yyyy')}"></td>
-                    <td th:text="TBD"></td>
                 </tr>
             </tbody>
         </table>

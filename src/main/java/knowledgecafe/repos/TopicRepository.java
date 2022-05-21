@@ -13,7 +13,7 @@ public interface TopicRepository extends JpaRepository<Topic, Long> {
 
     Set<Topic> getTopicsByConfidenceLevelAndInitialStudyDateBetween(ConfidenceLevel confidenceLevel, LocalDate startDate, LocalDate endDate);
 
-    Set<Topic> getTopicsByInitialStudyDateIsBetween(LocalDate startDate, LocalDate endDate);
+    Set<Topic> getTopicsByInitialStudyDateIsBetweenOrderByInitialStudyDate(LocalDate startDate, LocalDate endDate);
 
     Set<Topic> getTopicsBySubject(Subject subject);
 

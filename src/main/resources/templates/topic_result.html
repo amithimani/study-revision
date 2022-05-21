@@ -24,7 +24,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="topic : ${session.monthlyStudyTopics}">
+                <tr th:each="topic : ${session.topics}">
                     <td th:text="${#temporals.format(topic.getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
                     <td th:text="${topic.getSubject()}"></td>
                     <td th:text="${topic.getChapterName()}"></td>

@@ -76,10 +76,9 @@
                             <label for="revisionConfidence" class="col-10 col-form-label">Confidence Level </label>
                             <div class="col-10">
                                 <select class="form-control" type="type-select" id="revisionConfidence" th:field="*{confidenceLevel}">
-                                    <option value="LIGHTGREEN" >Confident</option>
-                                    <option value="GREEN">Very Confident</option>
-                                    <option value="RED" >Not Confident</option>
-                                    <option value="ORANGE" >Little Confident</option>
+                                    <option value="GREEN">GREEN</option>
+                                    <option value="YELLOW" >YELLOW</option>
+                                    <option value="RED">RED</option>
                                 </select>
                             </div>
                         </div>
@@ -138,10 +137,9 @@
                             <label for="revisionConfidenceUpdate" class="col-10 col-form-label">Confidence Level</label>
                             <div class="col-10">
                             <select class="form-control" type="type-select" id="revisionConfidenceUpdate" th:field="*{confidenceLevel}">
-                                <option value="LIGHTGREEN" >Confident</option>
-                                <option value="GREEN">Very Confident</option>
-                                <option value="RED" >Not Confident</option>
-                                <option value="ORANGE" >Little Confident</option>
+                                <option value="GREEN">GREEN</option>
+                                <option value="YELLOW" >YELLOW</option>
+                                <option value="RED" >RED</option>
                             </select>
                             </div>
                             <input type="hidden" th:value="${topic.id}" name="id"/>

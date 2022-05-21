@@ -1,6 +1,5 @@
 package knowledgecafe;
 
-import knowledgecafe.dto.TopicsListPojo;
 import knowledgecafe.dto.RevisionSearchPojo;
 import knowledgecafe.dto.TopicPojo;
 import knowledgecafe.model.*;
@@ -19,7 +18,6 @@ import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
-import java.util.logging.Logger;
 
 @Controller
 public class RevisionController {
@@ -46,13 +44,10 @@ public class RevisionController {
     public String revision_today(Model model, HttpSession session) {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
         Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
-        //TODO: convert Revision to DTO to send to UI
-        session.setAttribute("todaysRevisions", todaysRevisionTopic);
+        session.setAttribute("revisions", todaysRevisionTopic);
         Topic topic = new Topic();
         model.addAttribute("topic", topic);
         session.setAttribute("message", "Today's Revision Schedule...");
-        session.setAttribute("updatedTopics", new TopicsListPojo());
-        model.addAttribute("updatedTopicsModel", new TopicsListPojo());
         return "revision_form";
     }
 
@@ -61,36 +56,42 @@ public class RevisionController {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
 
         topicService.updateTopicConfidenceById(topic.getConfidenceLevel(), topic.getId());
-        //topicService.updateTopicConfidenceById(to)
-        Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
+        LocalDate searchDate = session.getAttribute("searchDate") == null ? LocalDate.now():
+                LocalDate.parse(session.getAttribute("searchDate").toString(), dateTimeFormatter);
 
-        // This should always be the case
-        session.setAttribute("todaysRevisions", todaysRevisionTopic);
+            Set<Revision> revisionTopics = revisionService.getRevisionTopicsForToday(searchDate);
+            session.setAttribute("revisions", revisionTopics);
+            session.setAttribute("searchDate", searchDate.format(dateTimeFormatter));
 
-        session.setAttribute("message", "Today's Updated Revision Schedule...");
+
+        session.setAttribute("message", "Updated Revision Schedule for Date: "+ searchDate.format(dateTimeFormatter));
         return "revision_form";
 
-
-        // return "index";
     }
 
 
     @PostMapping("/revision-search-date")
     public String revisionSearchByDate(@Valid @ModelAttribute RevisionSearchPojo revision, Model model, HttpSession session) {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
-
-        // Save to DB after updating
-
         LocalDate revisionStartDate = revision.getRevisionStartDate();
         LocalDate revisionEndDate = revision.getRevisionEndDate();
+
+        //Below variables will be used by default if revision End Date is blank means user can update confidence level for that date
+        String returnViewName = "revision_result";
+        String message ;
+
         if (revisionEndDate == null){
             revisionEndDate = revisionStartDate;
+            returnViewName = "revision_form";
+            message = "Revision for Date: " + revisionStartDate.format(dateTimeFormatter);
+            session.setAttribute("searchDate", revisionStartDate.format(dateTimeFormatter));
+        }else {
+            message = "Revisions between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionTopicsBetweenDate(revisionStartDate, revisionEndDate);
-        session.setAttribute("revisionsByDate", revisionsByDate);
-        String message = "Revisions between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
+        session.setAttribute("revisions", revisionsByDate);
         session.setAttribute("message", message);
-        return "revision_result";
+        return returnViewName;
     }
 
     @PostMapping("/revision-subject")
@@ -108,7 +109,7 @@ public class RevisionController {
             revisionEndDate = revisionStartDate;
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionsBySubjectBetweenDates(revisionStartDate, revisionEndDate, searchSubject);
-        session.setAttribute("revisionsByDate", revisionsByDate);
+        session.setAttribute("revisions", revisionsByDate);
         String message = "Revisions for Subject "+ searchSubject +" between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
         session.setAttribute("message", message);
 
@@ -127,7 +128,7 @@ public class RevisionController {
             revisionEndDate = revisionStartDate;
         }
         Set<Revision> revisionsByDate = revisionService.getRevisionsByConfidenceBetweenDates(revisionStartDate, revisionEndDate, confidenceLevel);
-        session.setAttribute("revisionsByDate", revisionsByDate);
+        session.setAttribute("revisions", revisionsByDate);
         String message = "Revisions as per Confidence "+ confidenceLevel+" between date " + revisionStartDate.format(dateTimeFormatter) + " and " + revisionEndDate.format(dateTimeFormatter);
         session.setAttribute("message", message);
 
@@ -145,7 +146,7 @@ public class RevisionController {
 
         String message = student.getFullName()+ "'s Monthly study report between " + studyStart.format(dateTimeFormatter) + " and  " + studyEnd.format(dateTimeFormatter);
         session.setAttribute("message", message);
-        session.setAttribute("monthlyStudyTopics", monthlyStudy);
+        session.setAttribute("topics", monthlyStudy);
 
         return "topic_result";
     }
@@ -163,23 +164,12 @@ public class RevisionController {
         //Update revision Schedule
         revisionService.createRevisions(topicPojo.getTopicStudyDate(), topic );
 
-        Set<Topic> currentDayTopics = topicService.getTopicsBetweenStudyDates(topicPojo.getTopicStudyDate(), topicPojo.getTopicStudyDate());
-        session.setAttribute("monthlyStudyTopics", currentDayTopics);
+        Set<Topic> createDateTopics = topicService.getTopicsBetweenStudyDates(topicPojo.getTopicStudyDate(), topicPojo.getTopicStudyDate());
+        session.setAttribute("topics", createDateTopics);
 
-        String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, "+"\n"+" Below is study summary for " + topicPojo.getTopicStudyDate().format(dateTimeFormatter) ;
+        String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, "+ System.lineSeparator()+" Below is study summary for " + topicPojo.getTopicStudyDate().format(dateTimeFormatter) ;
         session.setAttribute("message", message);
         return "topic_result";
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getAllErrors().forEach((error) -> {
-            String fieldName = ((FieldError) error).getField();
-            String errorMessage = error.getDefaultMessage();
-            errors.put(fieldName, errorMessage);
-        });
-        return errors;
-    }
 }

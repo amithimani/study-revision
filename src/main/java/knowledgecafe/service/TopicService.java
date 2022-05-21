@@ -50,7 +50,7 @@ public class TopicService {
     }
 
     public Set<Topic> getTopicsBetweenStudyDates(LocalDate startDate, LocalDate endDate){
-        return topicRepository.getTopicsByInitialStudyDateIsBetween(startDate, endDate);
+        return topicRepository.getTopicsByInitialStudyDateIsBetweenOrderByInitialStudyDate(startDate, endDate);
     }
 
     @Transactional

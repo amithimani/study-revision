@@ -10,20 +10,21 @@ A
 * Bootify
 * Maven
 * JPA
-* H2 In-Memory Database
+* H2 Database
 * Bootstrap
 
 ## Use Cases / User Stories TODO
 
 * Users should be able to log in.
-* We will assume that the accounts of residents are pre-created and there will be no sign-up feature.
-* Users should be able to view their reservations.
-* Users should be able to create new reservations by selecting the amenity type, date, and time.
-* Only logged-in users should be able to see the reservations page and create reservations.
-* We should check the capacity and only create new reservations if the current number of reservations does not exceed the capacity.
+* Only logged-in users should be able to see the revisions of their own
+* Logged-in user should be able to add study topic
+* Newly added study topic will create 3 revision by default Rev-1 (next day), Rev-2(7th Day), Rev-3(21st day)
+* User should be able to search revision based on dates
+* User should be able to search revision based on dates and subject
+* User should be able to search revision based on dates and confidence level (Red, Yellow, Green)
+* User should be able to see monthly study report
+* User should be able to update confidence level after finishing revisions
 
-## Bugs Pending to fix
-* confidence level populating with number in DB
-* Subject not getting populated in DB
-* Remove h2console config
-* add loggers
+## Features Pending 
+* Loggers
+* Report of revision finished

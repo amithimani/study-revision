@@ -19,13 +19,13 @@
                     <th scope="col">Subject</th>
                     <th scope="col">Chapter</th>
                     <th scope="col">Topic</th>
-                    <th scope="col">Revision Number</th>
+                    <th scope="col">Rev No.</th>
                     <th scope="col"> Confidence Level </th>
                     <th scope="col">First Study Date</th>
                 </tr>
             </thead>
             <tbody>
-                <tr th:each="revision : ${session.revisions}">
+                <tr th:style="${revision.status} == true ? 'background: green' : 'background: red'" th:each="revision : ${session.revisions}">
                 <div th:with="myTopic=${revision.getTopic()}">
                     <td th:text="${revision.getTopic().getSubject()}"></td>
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
@@ -34,9 +34,10 @@
                     <td>
                         <form action="#" th:action="@{/topic-update}" th:object="${myTopic}" method="post">
                             <input type="hidden" th:value="${myTopic.id}" name="id"/>
+                            <input type="hidden" th:value="${#temporals.format(revision.getRevisionDate(), 'dd-MM-yyyy')}" name="currentRevisionDate">
 
                             <div class="col-10">
-                            <select class="form-control" type="type-select" id="revisionConfidenceUpdate" th:value="${myTopic.confidenceLevel}" name="confidenceLevel">
+                                <select class="form-control" type="type-select" id="revisionConfidenceUpdate" th:value="${myTopic.confidenceLevel}" name="confidenceLevel">
                                 <option th:text="${revision.getTopic().getConfidenceLevel()}"> </option>
                                 <option value="GREEN">GREEN</option>
                                 <option value="YELLOW" >YELLOW</option>
@@ -53,7 +54,52 @@
                 </tr>
             </tbody>
         </table>
+        <br>
+        <h3> "Un-Revised Topics of previous week" </h3>
 
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">Revision Date</th>
+                <th scope="col">Subject</th>
+                <th scope="col">Chapter</th>
+                <th scope="col">Topic</th>
+                <th scope="col">Rev No.</th>
+                <th scope="col"> Confidence Level </th>
+                <th scope="col">First Study Date</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="revision : ${session.previousRevisions}">
+                <div th:with="myTopic=${revision.getTopic()}">
+                    <td th:text="${#temporals.format(revision.getRevisionDate(), 'dd-MMM-yyyy')}" />
+                    <td th:text="${revision.getTopic().getSubject()}"></td>
+                    <td th:text="${revision.getTopic().getChapterName()}"></td>
+                    <td th:text="${revision.getTopic().getTopicName()}"></td>
+                    <td th:text="${revision.getRevisionNumber()}" ></td>
+                    <td>
+                        <form action="#" th:action="@{/topic-update}" th:object="${myTopic}" method="post">
+                            <input type="hidden" th:value="${myTopic.id}" name="id"/>
+                            <input type="hidden" th:value="${#temporals.format(revision.getRevisionDate(), 'dd-MM-yyyy')}" name="currentRevisionDate">
+
+                            <div class="col-10">
+                                <select class="form-control" type="type-select" id="revisionConfidenceUpdatePast" th:value="${myTopic.confidenceLevel}" name="confidenceLevel">
+                                    <option th:text="${revision.getTopic().getConfidenceLevel()}"> </option>
+                                    <option value="GREEN">GREEN</option>
+                                    <option value="YELLOW" >YELLOW</option>
+                                    <option value="RED" >RED</option>
+                                </select>
+                                <button type="submit" class="btn btn-primary" value="submit">Update</button>
+                            </div>
+
+                        </form>
+                    </td>
+                    <td th:text="${#temporals.format(revision.getTopic().getInitialStudyDate(), 'dd-MMM-yyyy')}"></td>
+
+                </div>
+            </tr>
+            </tbody>
+        </table>
     </div>
 
 </div>

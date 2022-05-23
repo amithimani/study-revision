@@ -6,7 +6,9 @@ import knowledgecafe.model.Subject;
 import knowledgecafe.model.Topic;
 import knowledgecafe.repos.RevisionRepository;
 import knowledgecafe.util.RevisionConstants;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -26,6 +28,19 @@ public class RevisionService {
 
     public Set<Revision> getRevisionTopicsBetweenDate(LocalDate startDate, LocalDate endDate){
         return revisionRepository.getRevisionByRevisionDateIsBetweenOrderByRevisionDate(startDate, endDate);
+    }
+
+    public Set<Revision> getRevisionsBetweenDatesAndStatus (LocalDate startDate, LocalDate endDate, boolean status){
+        return revisionRepository.getRevisionByRevisionDateIsBetweenAndStatusOrderByRevisionDate(startDate, endDate, status);
+    }
+
+    public Set<Revision> getRevisionByRevisionDateForTopic(LocalDate revisionDate, Long topicId){
+       return revisionRepository.getRevisionByRevisionDateEqualsAndAndTopic_Id(revisionDate, topicId);
+    }
+
+    @Transactional
+    public int updateRevisionStatusById(boolean status, Long revisionId){
+        return revisionRepository.updateRevisionStatusById(status, revisionId);
     }
 
     public void createRevisions(LocalDate studyDate, Topic topic){

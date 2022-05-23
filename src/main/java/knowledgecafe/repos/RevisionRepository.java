@@ -18,4 +18,12 @@ public interface RevisionRepository extends JpaRepository<Revision, Long> {
 
     Set<Revision> getRevisionByRevisionDateIsBetweenAndTopic_ConfidenceLevelOrderByRevisionDate(LocalDate startDate, LocalDate endDate, ConfidenceLevel confidenceLevel);
 
+    Set<Revision> getRevisionByRevisionDateIsBetweenAndStatusOrderByRevisionDate(LocalDate startDate, LocalDate endDate, boolean status);
+
+    Set<Revision> getRevisionByRevisionDateEqualsAndAndTopic_Id(LocalDate revisionDate, Long topicID);
+
+    @Modifying(flushAutomatically = true)
+    @Query("update Revision r set r.status=:status where r.id=:id")
+    int updateRevisionStatusById(boolean status, Long id);
+
 }

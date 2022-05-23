@@ -44,7 +44,10 @@ public class RevisionController {
     public String revision_today(Model model, HttpSession session) {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
         Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
+        Set<Revision> pastWeeksRevisionTopic = revisionService.getRevisionsBetweenDatesAndStatus(LocalDate.now().minusWeeks(1), LocalDate.now(), false);
+
         session.setAttribute("revisions", todaysRevisionTopic);
+        session.setAttribute("previousRevisions", pastWeeksRevisionTopic);
         Topic topic = new Topic();
         model.addAttribute("topic", topic);
         session.setAttribute("message", "Today's Revision Schedule...");
@@ -56,15 +59,16 @@ public class RevisionController {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
 
         topicService.updateTopicConfidenceById(topic.getConfidenceLevel(), topic.getId());
-        LocalDate searchDate = session.getAttribute("searchDate") == null ? LocalDate.now():
-                LocalDate.parse(session.getAttribute("searchDate").toString(), dateTimeFormatter);
+        //Retrieve revision and update in ideal case it would be only one
+        Set<Revision> revisionList = revisionService.getRevisionByRevisionDateForTopic(topic.getCurrentRevisionDate(), topic.getId());
+        for (Revision revision: revisionList
+             ) {
+            revisionService.updateRevisionStatusById(true, revision.getId());
+        }
 
-            Set<Revision> revisionTopics = revisionService.getRevisionTopicsForToday(searchDate);
-            session.setAttribute("revisions", revisionTopics);
-            session.setAttribute("searchDate", searchDate.format(dateTimeFormatter));
+        getTodayPreviousWeeksTopics(session);
 
-
-        session.setAttribute("message", "Updated Revision Schedule for Date: "+ searchDate.format(dateTimeFormatter));
+        session.setAttribute("message", "Updated Revision Schedule for Date: "+ LocalDate.now().format(dateTimeFormatter));
         return "revision_form";
 
     }
@@ -170,6 +174,15 @@ public class RevisionController {
         String message = "Topic: '" + topic.getTopicName() + "' for subject '"+ topic.getSubject()+ "' and Chapter '"+ topic.getChapterName()+ "' created, "+ System.lineSeparator()+" Below is study summary for " + topicPojo.getTopicStudyDate().format(dateTimeFormatter) ;
         session.setAttribute("message", message);
         return "topic_result";
+    }
+
+    private void getTodayPreviousWeeksTopics (HttpSession session){
+        Set<Revision> revisionTopics = revisionService.getRevisionTopicsForToday(LocalDate.now());
+        session.setAttribute("revisions", revisionTopics);
+
+        Set<Revision> pastWeeksRevisionTopic = revisionService.getRevisionsBetweenDatesAndStatus(LocalDate.now().minusWeeks(1), LocalDate.now().minusDays(1), false);
+        session.setAttribute("previousRevisions", pastWeeksRevisionTopic);
+
     }
 
 }

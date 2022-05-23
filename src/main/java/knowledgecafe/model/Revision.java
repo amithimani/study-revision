@@ -1,6 +1,7 @@
 package knowledgecafe.model;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -36,4 +37,7 @@ public class Revision {
 
     @Column(nullable = false)
     private Integer revisionNumber;
+
+    @ColumnDefault("false")
+    private boolean status;
 }

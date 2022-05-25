@@ -6,11 +6,8 @@ import knowledgecafe.model.*;
 import knowledgecafe.service.*;
 import knowledgecafe.util.DataConversion;
 import knowledgecafe.util.SessionMgmt;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -43,13 +40,7 @@ public class RevisionController {
     @GetMapping("/revision-today")
     public String revision_today(Model model, HttpSession session) {
         SessionMgmt.populateSessionAttributes(model, session, studentService);
-        Set<Revision> todaysRevisionTopic = revisionService.getRevisionTopicsForToday(LocalDate.now());
-        Set<Revision> pastWeeksRevisionTopic = revisionService.getRevisionsBetweenDatesAndStatus(LocalDate.now().minusWeeks(1), LocalDate.now(), false);
-
-        session.setAttribute("revisions", todaysRevisionTopic);
-        session.setAttribute("previousRevisions", pastWeeksRevisionTopic);
-        Topic topic = new Topic();
-        model.addAttribute("topic", topic);
+        setSessionAttributeForTodaysPreviousWeeksTopics(session);
         session.setAttribute("message", "Today's Revision Schedule...");
         return "revision_form";
     }
@@ -66,7 +57,7 @@ public class RevisionController {
             revisionService.updateRevisionStatusById(true, revision.getId());
         }
 
-        getTodayPreviousWeeksTopics(session);
+        setSessionAttributeForTodaysPreviousWeeksTopics(session);
 
         session.setAttribute("message", "Updated Revision Schedule for Date: "+ LocalDate.now().format(dateTimeFormatter));
         return "revision_form";
@@ -176,7 +167,7 @@ public class RevisionController {
         return "topic_result";
     }
 
-    private void getTodayPreviousWeeksTopics (HttpSession session){
+    private void setSessionAttributeForTodaysPreviousWeeksTopics(HttpSession session){
         Set<Revision> revisionTopics = revisionService.getRevisionTopicsForToday(LocalDate.now());
         session.setAttribute("revisions", revisionTopics);
 

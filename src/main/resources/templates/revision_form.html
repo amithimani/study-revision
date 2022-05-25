@@ -13,7 +13,7 @@
     <div class="container" style="padding-top: 10vh; display: flex; flex-direction: column; align-items: center;">
         <h3> <span th:text="${session.message} ? ${session.message} : ''"/></h3>
         <br>
-        <table class="table table-striped">
+        <table class="table">
             <thead>
                 <tr>
                     <th scope="col">Subject</th>
@@ -25,7 +25,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr th:style="${revision.status} == true ? 'background: green' : 'background: red'" th:each="revision : ${session.revisions}">
+                <tr th:style="${revision.status} == true ? 'background: #3CD16D' : 'background: #F77D63'" th:each="revision : ${session.revisions}">
                 <div th:with="myTopic=${revision.getTopic()}">
                     <td th:text="${revision.getTopic().getSubject()}"></td>
                     <td th:text="${revision.getTopic().getChapterName()}"></td>
